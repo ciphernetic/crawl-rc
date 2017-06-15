@@ -29,7 +29,7 @@ function weapon_skill()
 	local highSkillVal = 0
 	local skills = {"Short Blades", "Long Blades", "Maces and Flails", "Axes", "Polearms", "Staves", "Unarmed Combat", "Bows", "Crossbows", "Slings"}
 	
-	for _,v in skills do
+	for _,v in ipairs(skills) do
 		if you.base_skill(v) > highSkillVal then
 			highSkill = v
 			highSkillVal = you.base_skill(v)
@@ -37,6 +37,12 @@ function weapon_skill()
 	end
 	
 	return highSkill
+end
+
+function pickup_weapon(it, hskill)
+
+	
+
 end
 
 local function autopickup(it, name)
