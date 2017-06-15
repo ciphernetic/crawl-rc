@@ -24,6 +24,63 @@ ae += <potion of mutation
 : end
 
 {
+function weapon_skill()
+	local highSkill = ""
+	local highSkillVal = 0
+	
+	if you.base_skill("Short Blades") > highSkillVal then
+		highSkill = "Short Blades"
+		highSkillVal = you.base_skill("Short Blades")
+	end
+	
+	if you.base_skill("Long Blades") > highSkillVal then
+		highSkill = "Long Blades"
+		highSkillVal = you.base_skill("Long Blades")
+	end
+	
+	if you.base_skill("Maces and Flails") > highSkillVal then
+		highSkill = "Maces and Flails"
+		highSkillVal = you.base_skill("Maces and Flails")
+	end
+	
+	if you.base_skill("Axes") > highSkillVal then
+		highSkill = "Axes"
+		highSkillVal = you.base_skill("Axes")
+	end
+	
+	if you.base_skill("Polearms") > highSkillVal then
+		highSkill = "Polearms"
+		highSkillVal = you.base_skill("Polearms")
+	end
+	
+	if you.base_skill("Staves") > highSkillVal then
+		highSkill = "Staves"
+		highSkillVal = you.base_skill("Staves")
+	end
+	
+	if you.base_skill("Unarmed Combat") > highSkillVal then
+		highSkill = "Unarmed Combat"
+		highSkillVal = you.base_skill("Unarmed Combat")
+	end
+	
+	if you.base_skill("Bows") > highSkillVal then
+		highSkill = "Bows"
+		highSkillVal = you.base_skill("Bows")
+	end
+	
+	if you.base_skill("Crossbows") > highSkillVal then
+		highSkill = "Crossbows"
+		highSkillVal = you.base_skill("Crossbows")
+	end
+	
+	if you.base_skill("Slings") > highSkillVal then
+		highSkill = "Slings"
+		highSkillVal = you.base_skill("Slings")
+	end
+	
+	return highSkill
+end
+
 local function autopickup(it, name)
     if it.is_useless then
         return false
