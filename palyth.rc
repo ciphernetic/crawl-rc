@@ -47,7 +47,7 @@ local function autopickup(it, name)
                             gloves="Gloves", boots="Boots"}
         st, _ = it.subtype()
         if good_slots[st] ~= nil and items.equipped_at(good_slots[st]) == nil then
-			if good_slots[st] == "Gloves" and you.has_clas() > 0 then return end
+			if good_slots[st] == "Gloves" and you.has_class() > 0 then return end
 			return true
         end
     end
