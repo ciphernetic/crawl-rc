@@ -1,50 +1,39 @@
-# TEAMNAME Grab_em_by_the_felid
-# TEAMMEMBERS frobop jenzors Miron Winchcombe Skippy
+# TEAMNAME FSG
+# TEAMMEMBERS Frobop Miron
 
-##### INCLUDES ######
-# The damage announcement messages
-
-##### 1- Starting Screen ############################################
-#
+### Interface ###
 default_manual_training = true
+sort_menus += inv: true : equipped, freshness, identified, basename, qty, qualname, charged
+autofight_stop = 70
+hp_colour = 70:yellow, 50:lightred, 25:red
+show_player_species = true
 
-##### 3-  Interface #################################################
-#
-##### 3-a       Picking up and Dropping ###############
-#
+### Explore ###
+show_travel_trail = false
+travel_delay = -1
+explore_delay = -1
+rest_delay = -1
+
+### Console ###
+# Fix clouds so they do not look like orcs
+display_char += cloud:x2593,cloud_weak:x2592,cloud_fading:x2591
+
+### Pick up ###
 autopickup = $?!+"/%|
 
 ae := autopickup_exceptions
 
-ae += ring of (resist .*)
-ae += wand of random effects
-ae += <potion of mutation
-: if you.race() ~= "Vampire" then
-    ae += potion of blood
-: end
+ae += staves of.*
+ae += ring of.*
+ae += amulets of.*
+
+ae += <throwing net
+ae += <stone
+ae += <javelin
+ae += <tomahawk
+ae += <immolation
 
 {
-function weapon_skill()
-	local highSkill = ""
-	local highSkillVal = 0
-	local skills = {"Short Blades", "Long Blades", "Maces and Flails", "Axes", "Polearms", "Staves", "Unarmed Combat", "Bows", "Crossbows", "Slings"}
-	
-	for _,v in ipairs(skills) do
-		if you.base_skill(v) > highSkillVal then
-			highSkill = v
-			highSkillVal = you.base_skill(v)
-		end
-	end
-	
-	return highSkill
-end
-
-function pickup_weapon(it, hskill)
-
-	
-
-end
-
 local function autopickup(it, name)
     if it.is_useless then
         return false
@@ -57,54 +46,10 @@ local function autopickup(it, name)
         local good_slots = {cloak="Cloak", helmet="Helmet",
                             gloves="Gloves", boots="Boots"}
         st, _ = it.subtype()
-        if good_slots[st] ~= nil and
-           items.equipped_at(good_slots[st]) == nil then
-            return true
+        if good_slots[st] ~= nil and items.equipped_at(good_slots[st]) == nil then
+			if good_slots[st] == "Gloves" and you.has_clas() > 0 then return end
+			return true
         end
-                
-                local equipped_body = items.equipped_at("Armour")
-                
-        if name:find("dragon") then
-                    if equipped_body then
-                            local armour_name = equipped_body.name()
-                                
-                                if armour_name:find("dragon") then
-                                    return false
-                                end
-                        end
-                        
-            return true
-        end
-    end
-        
-    if class == "weapon" then
-            local weapon = items.equipped_at("Weapon")
-                
-                if weapon then
-                        local weapon_name = weapon.name()
-                        
-                        if weapon_name:find("demon") or
-                                weapon_name:find("quick") or
-                                weapon_name:find("double") or
-                                weapon_name:find("eveningstar") or
-                                weapon_name:find("lajatang") or
-                                weapon_name:find("triple") or
-                                weapon_name:find("executioner") then
-                                
-                                return false
-                        end 
-
-                    if name:find("demon") or
-                            name:find("quick") or
-                            name:find("double") or
-                            name:find("eveningstar") or
-                            name:find("lajatang") or
-                            name:find("triple") or
-                            name:find("executioner") then
-                                
-                                return true
-                        end 
-                end
     end
     if class == "missile" then
         if name:find("curare") then
@@ -117,107 +62,41 @@ clear_autopickup_funcs()
 add_autopickup_func(autopickup)
 }
 
-##### 3-b       Targeting ############################
+### Autoinscribes ###
+autoinscribe += (bad|dangerous)_item.*potion:!q
+autoinscribe += (bad|dangerous).*berserk rage:!q
+autoinscribe += scroll.*silence:!r
+autoinscribe += of faith:!P
+autoinscribe += manual of:!d
+autoinscribe += (throwing net|curare):=f
 
-##### 3-c       Passive Sightings #####################
-
-##### 3-d       Branding ##############################
-
-##### 3-e       Level Map Functions ###################
-
-##### 3-f       Viewport Options  ###################
-
-##### 3-g       Travel and Exploration #################
-#
-
-stop := runrest_stop_message 
-
-stop += You feel yourself slow down
-stop += less insulated
-stop += You are starting to lose your buoyancy
-stop += You lose control over your flight
-stop += Your hearing returns
-stop += Your transformation is almost over
-stop += back to life
-stop += uncertain
-stop += time is quickly running out
-stop += life is in your own hands
-stop += is no longer charmed
-stop += flesh start
-
-ignore := runrest_ignore_message
-
-ignore += grinding sound
-ignore += contamination has completely
-ignore += chunks of flesh in your inventory.*rotted away
-
-##### 3-h       Command Enhancements ##################
-#
-sort_menus += inv: true : equipped, freshness, identified, basename, qty, 
-qualname, charged
-autofight_stop = 70
-equip_bar = true
-show_travel_trail = false
-
-##### 3-i       Messages and Display Enhancements #####
-#
-hp_colour = 70:yellow, 50:lightred, 25:red
-
+### Messages ###
 more := force_more_message
-more += Your surroundings flicker
-more += sense of stasis
-more += Your amulet of stasis
-more += You cannot teleport right now
-more += The writing blurs in front of your eyes
-more += You fall through a shaft
-more += A huge blade swings out and slices into you
-more += (blundered into a|invokes the power of) Zot
-more += Ouch! That really hurt!
-more += dispelling energy hits you
-more += You convulse
-more += You are (blasted|electrocuted)
-more += You are.*(confused|poisoned)
-more += (starving|devoid of blood)
-more += wrath finds you
-more += lose consciousness
-more += You are too injured to fight blindly
-more += Green shoots are pushing up through the earth
-more += You have reached level
-more += Your scales start
-more += You feel monstrous
-more += Jiyva alters your body
-more += You have gained .* skill!
-more += Your .* skill increases to level [0-9]+!
-more += You have mastered .*!
-more += Strange energies course through your body\.
-more += You now have enough gold to buy
-more += Autopickup deactivated;
-more += Beep!
-more += (the|[+--]) .* comes into view\.
-more += (Blork|Grinder|Prince Ribbit|the Enchantress|the Lernaean hydra|the 
-royal jelly|the Serpent of Hell).*comes into view\.
-: if you.god() == "Ashenzari" then
-    more += Ashenzari warns.*
-: end
 
-##### 3-j       Colours (messages and menus) ##########
-#
+more += A sentinel's mark forms upon you
+more += You are blasted by holy energy!
+more += You are (blasted|electrocuted)!
+more += Space warps.*around you
+more += Space bends around you
+more += (the|[+--]) .* comes into view\.
+more += (Blork|Grinder|Prince Ribbit|the Enchantress|the Lernaean hydra|the royal jelly|the Serpent of Hell).*comes into view\.
+more += Autopickup deactivated;
+more += You are too injured to fight blindly
+more += You fall through a shaft
+
+### Colors ###
 menu := menu_colour
 
-menu += lightblue:^unidentified .*(potion|scroll|wand|jewellery|book).*
-menu += lightblue:^unidentified .*weapon.*(runed|glowing|enchanted)
-menu += lightblue:^unidentified .*armour.*(runed|glowing|enchanted)
-menu += lightblue:^unidentified .*armour.*(embroidered|shiny|dyed)
+menu += lightblue:unidentified.*(potion|scroll|wand|jewellery|book).*
+menu += lightblue:unidentified.*weapon.*(runed|glowing|enchanted)
+menu += lightblue:unidentified.*armour.*(runed|glowing|embroidered|shiny|dyed)
+menu += yellow:.*known .*(ring of (slaying|evasion|protection(?! from))|amulet of reflection)
 
-# These lines will suppress extra feedback messages from travel/shift-running.
-#
-# message_colour ^= mute:monster_warning:
-# message_colour ^= mute:You start resting
-# message_colour ^= mute:(HP|Magic) restored
-# message_colour ^= mute:warning:Not with.*(in view|monsters around)
+### Spells ###
 
-##### 5-   Micellaneous ###############################
-#
-#### 5-a        #######################################
-#
-show_player_species = true
+spell_slot +=Repel missiles:d
+spell_slot +=Swiftness:s
+spell_slot +=Flight:x
+spell_slot +=Apportation:f
+spell_slot +=Regeneration:i
+spell_slot +=Invisibility:e
