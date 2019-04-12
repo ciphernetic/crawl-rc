@@ -56,6 +56,15 @@ local function autopickup(it, name)
             return true
         end
     end
+	local itname = it.name(true)
+	if string.find(itname, "lamp of fire") then
+	  for inv in iter.invent_iterator:new(items.inventory()) do
+	    if itname == inv.name() then
+		  return fales
+		end
+	  end
+	  return true
+	end
 end
 
 clear_autopickup_funcs()
@@ -83,6 +92,10 @@ more += (Blork|Grinder|Prince Ribbit|the Enchantress|the Lernaean hydra|the roya
 more += Autopickup deactivated;
 more += You are too injured to fight blindly
 more += You fall through a shaft
+
+channel.multiturn = mute
+msc := message_colour
+msc += mute:.*bites the plant.*
 
 ### Colors ###
 menu := menu_colour
