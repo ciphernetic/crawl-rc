@@ -80,6 +80,7 @@ autoinscribe += manual of:!d
 autoinscribe += (throwing net|curare):=f
 
 ### Messages ###
+dump_message_count = 60
 more := force_more_message
 
 more += A sentinel's mark forms upon you
